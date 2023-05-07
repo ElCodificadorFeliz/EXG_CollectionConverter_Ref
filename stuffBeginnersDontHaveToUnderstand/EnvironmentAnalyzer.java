@@ -4,12 +4,12 @@ package stuffBeginnersDontHaveToUnderstand;
 
 
 import java.io.Serializable;
-//import java.lang.module.ModuleDescriptor;
-//import java.util.Optional;
+import java.lang.module.ModuleDescriptor;
+import java.util.Optional;
 //
-//import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 //deprecated: Warum tut sich JUnit immer so schwer auf einfache&zeitlose(!) Weise die Version zur Verfügung zu stellen?
-//import org.junit.platform.runner.JUnitPlatform;
+import org.junit.platform.runner.JUnitPlatform;
 
 
 /**
@@ -94,7 +94,6 @@ public class EnvironmentAnalyzer implements Serializable {
      * 
      * @return Jupiter version
      */
-    /*
     public static String getJUnitJupiterVersion(){
         final String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try{
@@ -132,8 +131,6 @@ public class EnvironmentAnalyzer implements Serializable {
         return "??? <- could not be determined as result of an unexpected exception";
     }//method()
     //Note -> see https://stackoverflow.com/questions/59377304/accessing-junit-version-during-runtime
-     * 
-     */
     //
     /**
      * Determine (JUnit-) Platform version<br />
@@ -141,7 +138,6 @@ public class EnvironmentAnalyzer implements Serializable {
      * 
      * @return (JUnit-) Platform version
      */
-    /*
     public static String getJUnitPlatformVersion(){
         final String methodName = new Object(){}.getClass().getEnclosingMethod().getName();
         try{
@@ -179,6 +175,5 @@ public class EnvironmentAnalyzer implements Serializable {
         return "??? <- could not be determined as result of an unexpected exception";
     }//method()
     //Note -> see https://stackoverflow.com/questions/59377304/accessing-junit-version-during-runtime
-    */
     
 }//class
