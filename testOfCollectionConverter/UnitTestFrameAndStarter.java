@@ -8,6 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
@@ -116,7 +117,7 @@ public class UnitTestFrameAndStarter{
     
     @Test
     public void testSimple02(){
-        // prepare test parameter
+        // prepare test input/parameter
         final Integer[] testInputRaw = {
             3, 31, 310,
             3, 32, 320,
@@ -136,7 +137,7 @@ public class UnitTestFrameAndStarter{
         final Converter converter = new Converter();
         final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( list );
         //
-        //check test result
+        // check test result
         assertEquals( 4, computedResult.size() );
         for( final Object exteriorKey : computedResult.keySet() ){
             final Map<Object,Object> interiorMap = computedResult.get( exteriorKey );
@@ -152,17 +153,119 @@ public class UnitTestFrameAndStarter{
     
     @Test
     public void testSimple03(){
+        // prepare test input/parameter
+        Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
+        Map<Object,Object> tmpInnerMap;
+        tmpInnerMap = new HashMap<Object,Object>();
+        tmpInnerMap.put( 11, 110 );
+        outerMap.put( 1,  tmpInnerMap );
+        //
+        // prepare expected result
+        final List<Object> expectedResult = new ArrayList<Object>( Arrays.asList( 1, 11, 110 ));
+        //
+        // do actual test
+        final Converter converter = new Converter();
+        final List<Object> computedResult = converter.toList( outerMap );
+        //
+        // check test result
+        assertEquals( expectedResult, computedResult );
     }//method()
     
     
     
     @Test
     public void test01(){
+        // prepare test input/parameter
+        Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
+        //
+        for( int i=1; i<10; i++ ){
+            final Map<Object,Object> innerMap = new HashMap<Object,Object>();
+            for( int j=1; j<=i; j++ ){
+                 final int key = j*10 +j;
+                final int data = key*10 +j; 
+                innerMap.put( key, data );
+            }//for
+            outerMap.put( i, innerMap );
+        }//for
+        //
+        // do actual test
+        final Converter converter = new Converter();
+        final List<Object> computedResultList = converter.toList( outerMap );
+        
+        assertEquals( 135, computedResultList.size() );
+        final Map<Object,Map<Object,Object>> computeResultMap = converter.toNestedMap( computedResultList );
     }//method()
     
     
     @Test
     public void test02(){
+        // prepare test input/parameter
+        Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
+        //
+        for( int i=9; i>0; i-- ){
+            final Map<Object,Object> innerMap = new HashMap<Object,Object>();
+            for( int j=1; j<=i; j++ ){
+                 final int key = j*10 +j;
+                final int data = key*10 +j; 
+                innerMap.put( key, data );
+            }//for
+            outerMap.put( i, innerMap );
+        }//for
+        //
+        // do actual test
+        final Converter converter = new Converter();
+        final List<Object> computedResultList = converter.toList( outerMap );
+        assertEquals( 135, computedResultList.size() );
+        
+        final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
+        assertEquals( outerMap, computedResultMap );
+    }//method()
+    
+    
+    @Test
+    public void randomBasedTest01(){
+        for( int runsStillToDo = 42; --runsStillToDo>0; ){
+            int innerEntryCnt = 0;
+            //
+            // prepare test input/parameter
+            final List<Integer> li = new ArrayList<Integer>( Arrays.asList( 1, 2, 3, 4, 5, 6, 7, 8, 9 ));
+            Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
+            //
+            for( int stillToDo=7; --stillToDo>0; ){
+                final int index =  (int)( li.size() * Math.random() );
+                final Map<Object,Object> innerMap = new HashMap<Object,Object>();
+                final int leadInt = li.remove( index );
+                final int max = (int)( 9 * Math.random() +1 );
+                innerEntryCnt += max;
+                for( int i= max; --i>=0; ){
+                    final int key = leadInt*10 +i;
+                    final int data = key*10 +i; 
+                    innerMap.put( key, data );
+                }//for
+                outerMap.put( leadInt, innerMap );
+            }//for
+            //
+            // do actual test
+            final Converter converter = new Converter();
+            List<Object> computedResultList = converter.toList( outerMap );
+            for( int stillToDo=5; --stillToDo>0; ){
+                assertEquals( 3*innerEntryCnt, computedResultList.size() );
+                computedResultList = converter.toList( converter.toNestedMap( computedResultList ));
+            }//for
+            final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
+            assertEquals( outerMap, computedResultMap );
+        }//for
+    }//method()
+    
+    
+    @Test
+    public void extremeTest01(){
+        //leer
+        // null - list
+        // null entry - list
+        // null - omap
+        // null - imap
+        
         boolean expectedExceptionDetected = false;
         try{
             // do actual test
