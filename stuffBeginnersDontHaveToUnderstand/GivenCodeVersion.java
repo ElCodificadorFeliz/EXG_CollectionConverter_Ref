@@ -39,7 +39,7 @@ public class GivenCodeVersion implements Serializable {
     //
     //--VERSION:----------------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv------//#####################################
     //  ========                                        #___~version~___YYYY_MM_DD__dd_     //### HERE:
-    final static private long encodedGivenCodeVersion = 2___00001_003___2023_05_09__01L;    //### <<<=== !!! GIVEN CODE VERSION !!!
+    final static private long encodedGivenCodeVersion = 2___00001_004___2023_05_10__01L;    //### <<<=== !!! GIVEN CODE VERSION !!!
     //------------------------=======================---#---^^^^^-^^^---^^^^-^^-^^--^^      //#####################################
     //#############################################################################################################################
     final static private long encodedOwnClassVersion  = 2___00002_009___2023_03_08__02L;    // encoded version of class itself

@@ -3,6 +3,8 @@ package testOfCollectionConverter;
 
 
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.lang.reflect.Constructor;
 //
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -14,6 +16,7 @@ import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
 import collectionConverter.Converter;
 import stuffBeginnersDontHaveToUnderstand.EnvironmentAnalyzer;
 import stuffBeginnersDontHaveToUnderstand.GivenCodeVersion;
@@ -31,7 +34,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_001___2023_05_07__01L;
+    final static private long encodedVersion = 2___00001_003___2023_05_10__01L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -258,18 +261,96 @@ public class UnitTestFrameAndStarter{
     }//method()
     
     
+    
+    
+    
+    /** extreme test: empty list as actual parameter for toMap() */
+    // empty list
     @Test
     public void extremeTest01(){
-        //leer
-        // null - list
-        // null entry - list
-        // null - omap
-        // null - imap
-        
+        final Converter converter = new Converter();
+        final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( new ArrayList<Object>() );
+        assertTrue( computedResult.isEmpty() );
+    }//method()
+    
+    
+    /** extreme test: empty map as actual parameter for toList() */
+    @Test
+    public void extremeTest02(){
+        final Converter converter = new Converter();
+        final List<Object> computedResult = converter.toList( new HashMap<Object,Map<Object,Object>>() );
+        assertTrue( computedResult.isEmpty() );
+    }//method()
+    
+    
+    
+    /** extreme test: list is null */
+    @Test
+    public void extremeTest11(){
+        final Converter converter = new Converter();
+        //
+        // prepare test        
         boolean expectedExceptionDetected = false;
+        //
+        // do actual test
         try{
+            final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( null );
+        }catch( final IllegalArgumentException | AssertionError ex ){
+            expectedExceptionDetected = true;
+        }finally{
+            //check test result
+            if( ! expectedExceptionDetected ){
+                fail();
+            }//if
+        }//try
+    }//method()    
+    
+    
+    /** extreme test: list element is null */
+    @Test
+    public void extremeTest12(){
+        final int[] orgArrayOfInt = { 1, 2, 3, 4, 5 };
+        //       
+        for( int i=orgArrayOfInt.length; --i>=0; ){
+            final Converter converter = new Converter();
+            //
+            // prepare test input/parameter
+            final Integer[] tmpArrayOfInteger = new Integer[orgArrayOfInt.length];
+            for( int j=orgArrayOfInt.length; --j>=0; )  tmpArrayOfInteger[j] = orgArrayOfInt[j];
+            tmpArrayOfInteger[i] = null;
+            //
+            final List<Integer> tmpListOfInteger = Arrays.asList( tmpArrayOfInteger );
+            final List<Object> list = new ArrayList<Object>( tmpListOfInteger );
+            boolean expectedExceptionDetected = false;
+            //
             // do actual test
-         }catch( final IllegalArgumentException | AssertionError ex ){
+            try{
+                final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( list );
+            }catch( final IllegalArgumentException | AssertionError ex ){
+                expectedExceptionDetected = true;
+            }finally{
+                //check test result
+                if( ! expectedExceptionDetected ){
+                    fail();
+                }//if
+            }//try
+        }//for
+    }//method()    
+    
+    
+    
+    /** extreme test: map is null */
+    @Test
+    public void extremeTest21(){
+        final Converter converter = new Converter();
+        //
+        // prepare test        
+        boolean expectedExceptionDetected = false;
+        //
+        // do actual test
+        try{
+            final List<Object> computedResultList = converter.toList( null );
+        }catch( final IllegalArgumentException | AssertionError ex ){
             expectedExceptionDetected = true;
         }finally{
             //check test result
@@ -341,6 +422,41 @@ public class UnitTestFrameAndStarter{
         }//method()
         
     }//class
+    
+    
+    private static Object generateRequestedObject (
+        final String      requestedClassName,
+        final Class<?>[]  requestedParameterTypes,
+        final Object[]    actualParameter
+    ) throws TestSupportException {
+        try{
+            final Class<?> requestedClass = Class.forName( requestedClassName );
+            final Object constructedObject = callConstructor( requestedClass, requestedParameterTypes, actualParameter );
+            return constructedObject;
+        }catch( final ClassNotFoundException ex ){
+            throw new TestSupportException( String.format( "object of \"%s\" can NOT be generated properly", requestedClassName ),  ex );
+        }//try
+    }//method()
+    //
+    private static Object generateRequestedObject(
+        final String  requestedClassName
+    ) throws TestSupportException {
+        return generateRequestedObject( requestedClassName, null, null );
+    }//method()
+    
+    private static Object callConstructor (
+        final Class<?>    classUnderTest,
+        final Class<?>[]  requestedParameterTypes,
+        final Object[]    actualParameter
+    ) throws TestSupportException {
+        try{
+            final Constructor<?> constructor = classUnderTest.getConstructor( requestedParameterTypes );
+            final Object constructedObject = constructor.newInstance( actualParameter );
+            return constructedObject;
+        }catch( final NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException ex ){
+            throw new TestSupportException( String.format( "constructor for \"%s\" can NOT be called properly", classUnderTest.getSimpleName() ),  ex );
+        }//try 
+    }//method()
     
     private static Object callFunction(
         final Object objectUnderTest,

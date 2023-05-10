@@ -21,7 +21,7 @@ public class Converter {
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_001___2023_05_06__01L;
+    final static private long encodedVersion = 2___00001_002___2023_05_10__01L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -44,6 +44,8 @@ public class Converter {
      * @return  flattened nested map as list
      */
     public List<Object> toList( final Map<Object,Map<Object,Object>> exteriorMap ){
+        assert null!=exteriorMap : "Illegal Argument : null is NOT supported";
+        
         final List<Object> list = new ArrayList<>();
         final Set<Entry<Object,Map<Object,Object>>> exteriorEntrySet = exteriorMap.entrySet();
         for( final Entry<Object,Map<Object,Object>> exteriorEntry : exteriorEntrySet ){
@@ -67,6 +69,7 @@ public class Converter {
      * @return  nested map
      */
     public Map<Object,Map<Object,Object>> toNestedMap( final List<Object> list ){
+        assert null!=list : "Illegal Argument : null is NOT supported";
         assert 0==list.size()%3 : "Illegal Argument : List requires multiple of three elements that it can be converted to nested map";
         
         final Map<Object,Map<Object,Object>> exteriorMap = new HashMap<Object,Map<Object,Object>>();
