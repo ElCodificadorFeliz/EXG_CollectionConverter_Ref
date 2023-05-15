@@ -3,9 +3,9 @@ package testOfCollectionConverter;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-
-import java.lang.reflect.Constructor;
 //
+import collectionConverter.Converter;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -16,8 +16,6 @@ import java.util.Map;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-
-import collectionConverter.Converter;
 import stuffBeginnersDontHaveToUnderstand.EnvironmentAnalyzer;
 import stuffBeginnersDontHaveToUnderstand.GivenCodeVersion;
 import stuffBeginnersDontHaveToUnderstand.Version;
@@ -34,7 +32,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_003___2023_05_10__01L;
+    final static private long encodedVersion = 2___00001_004___2023_05_15__01L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -89,6 +87,7 @@ public class UnitTestFrameAndStarter{
     
     
     
+    /** simple test */
     @Test
     public void testSimple01(){
         // prepare test parameter
@@ -118,6 +117,7 @@ public class UnitTestFrameAndStarter{
     }//method()
     
     
+    /** simple test */
     @Test
     public void testSimple02(){
         // prepare test input/parameter
@@ -154,6 +154,7 @@ public class UnitTestFrameAndStarter{
     }//method()
     
     
+    /** simple test */
     @Test
     public void testSimple03(){
         // prepare test input/parameter
@@ -176,6 +177,7 @@ public class UnitTestFrameAndStarter{
     
     
     
+    /** test ... */
     @Test
     public void test01(){
         // prepare test input/parameter
@@ -184,7 +186,7 @@ public class UnitTestFrameAndStarter{
         for( int i=1; i<10; i++ ){
             final Map<Object,Object> innerMap = new HashMap<Object,Object>();
             for( int j=1; j<=i; j++ ){
-                 final int key = j*10 +j;
+                final int key = j*10 +j;
                 final int data = key*10 +j; 
                 innerMap.put( key, data );
             }//for
@@ -194,12 +196,17 @@ public class UnitTestFrameAndStarter{
         // do actual test
         final Converter converter = new Converter();
         final List<Object> computedResultList = converter.toList( outerMap );
-        
+        //
+        // check test result
         assertEquals( 135, computedResultList.size() );
-        final Map<Object,Map<Object,Object>> computeResultMap = converter.toNestedMap( computedResultList );
+        //
+        // and back again
+        final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
+        assertEquals( outerMap, computedResultMap );
     }//method()
     
     
+    /** test ... */
     @Test
     public void test02(){
         // prepare test input/parameter
@@ -218,13 +225,17 @@ public class UnitTestFrameAndStarter{
         // do actual test
         final Converter converter = new Converter();
         final List<Object> computedResultList = converter.toList( outerMap );
+        //
+        // check test result
         assertEquals( 135, computedResultList.size() );
-        
+        //
+        // and back again
         final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
         assertEquals( outerMap, computedResultMap );
     }//method()
     
     
+    /** test ... */
     @Test
     public void randomBasedTest01(){
         for( int runsStillToDo = 42; --runsStillToDo>0; ){
@@ -252,9 +263,11 @@ public class UnitTestFrameAndStarter{
             final Converter converter = new Converter();
             List<Object> computedResultList = converter.toList( outerMap );
             for( int stillToDo=5; --stillToDo>0; ){
-                assertEquals( 3*innerEntryCnt, computedResultList.size() );
+                assertEquals( 3*innerEntryCnt, computedResultList.size() );     // check test result
                 computedResultList = converter.toList( converter.toNestedMap( computedResultList ));
             }//for
+            //
+            // and back again
             final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
             assertEquals( outerMap, computedResultMap );
         }//for
@@ -265,7 +278,6 @@ public class UnitTestFrameAndStarter{
     
     
     /** extreme test: empty list as actual parameter for toMap() */
-    // empty list
     @Test
     public void extremeTest01(){
         final Converter converter = new Converter();
@@ -299,9 +311,7 @@ public class UnitTestFrameAndStarter{
             expectedExceptionDetected = true;
         }finally{
             //check test result
-            if( ! expectedExceptionDetected ){
-                fail();
-            }//if
+            if( ! expectedExceptionDetected )  fail();
         }//try
     }//method()    
     
@@ -330,9 +340,7 @@ public class UnitTestFrameAndStarter{
                 expectedExceptionDetected = true;
             }finally{
                 //check test result
-                if( ! expectedExceptionDetected ){
-                    fail();
-                }//if
+                if( ! expectedExceptionDetected )  fail();
             }//try
         }//for
     }//method()    
@@ -354,9 +362,7 @@ public class UnitTestFrameAndStarter{
             expectedExceptionDetected = true;
         }finally{
             //check test result
-            if( ! expectedExceptionDetected ){
-                fail();
-            }//if
+            if( ! expectedExceptionDetected )  fail();
         }//try
     }//method()
     
