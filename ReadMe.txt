@@ -44,7 +44,7 @@ o)  ...
 
 History
 =======
-01/#15  s23s  (ITS1 P1 AZ#6) A6.2           git@github.com:ElCodificadorFeliz/EXG_FrequencyMap_Ref                          Eclipse 22-12 (4.26.x) ,  (Eclipse)Temurin / (Adopt)OpenJDK 17.0.6+10
---/#--  s22w  (AI1  P1 AZ#5) BWnd           Idee/Aufgabe übernommen von Birgit Wendholt : s22w  (AI1 P1 AZ#5)
+01/#15  s23s  (ITS1 P1 AZ#6) Z6.2           git@github.com:ElCodificadorFeliz/EXG_FrequencyMap_Ref                          Eclipse 22-12 (4.26.x) ,  (Eclipse)Temurin / (Adopt)OpenJDK 17.0.6+10
+--/#--  s22w  (AI1  P1 AZ#5) BWnd           Idee/Aufgabe übernommen von Birgit Wendholt : s22w  (AI1 P1 AZ#5)               (JetBrains-)IntelliJ
 ......  ....  ...................           ............................................................                    ..........
 Zyklus  Semester    Aufgabe                 VCS                                                                             IDE & Java
