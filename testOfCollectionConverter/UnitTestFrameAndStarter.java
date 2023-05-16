@@ -33,7 +33,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_007___2023_05_16__03L;
+    final static private long encodedVersion = 2___00001_008___2023_05_16__04L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -269,7 +269,27 @@ public class UnitTestFrameAndStarter{
     }//method()
     
     
-    /** test with different random generated maps as actual parameter for toNested(toList())*/
+    /**
+     * Test with different random generated maps as actual parameter for toNestedMap(toList())
+     * and check if map equal to original mapis reproduced again.<br />
+     * <br />
+     * <br />
+     * Achtung! Dies ist ein zufallsbasierter Test.<br />
+     * Zufallsbasierte Tests sind NICHT unumstritten bzw. sehr umstritten.
+     * Richtig eingesetzt und gedeutet sind sie jedoch sehr wertvoll.<br />
+     * <br />
+     * 1) Es gibt unzählig viele Testmöglichkeiten.
+     * Selbst wenn Sie diesen Test nach einer Fehlermeldung mehr als tausend Mal auführen und dieser Test keine Fehler mehr findet,
+     * können Sie trotzdem nicht sicher sein, dass Sie "den Fehler" behoben haben.<br />
+     * <br />
+     * 2) Dieser Test sollte/darf nicht allein anschlagen. Min. ein Test ohne "random"-Markierung sollte/muss ebenfalls angeschlagen haben.
+     * Konzentrieren Sie sich (zunächst) darauf, dass diese(r) Test(s) keine Fehler mehr findet.<br />
+     * <br />
+     * 3) Sollte nur dieser Test bzw. nur Tests mit "random"-Markierung anschlagen, dann haben Sie eine "Testlücke" entdeckt.
+     * Machen Sie bitte einen Screenshot von JUnit (bzw. den JUnit-Tests) und von der Fehlermeldung dieses Tests und geben Sie bitte Rückmeldung
+     * mit dem Ziel, dass die TestLücke geschlossen wird.<br />
+     * Und bedenken Sie, dass dieser Test einen Fehler in Ihrer Implementierung aufgezeigt hat 😉
+     */
     @Test
     public void randomBasedTest01(){
         final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
@@ -279,7 +299,7 @@ public class UnitTestFrameAndStarter{
             //
             // prepare test input/parameter
             final List<Integer> li = new ArrayList<Integer>( Arrays.asList( 1, 2, 3, 4, 5, 6, 7, 8, 9 ));
-            Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
+            final Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
             for( int stillToDo=7; --stillToDo>0; ){
                 final int index =  (int)( li.size() * Math.random() );
                 final Map<Object,Object> innerMap = new HashMap<Object,Object>();
@@ -293,9 +313,10 @@ public class UnitTestFrameAndStarter{
                 }//for
                 outerMap.put( leadInt, innerMap );
             }//for
+            final Map<Object,Map<Object,Object>> stimulus = outerMap;
             //
             // do actual test
-            List<Object> computedResultList = converter.toList( outerMap );
+            List<Object> computedResultList = converter.toList( stimulus );
             for( int stillToDo=5; --stillToDo>0; ){
                 assertEquals( 3*innerEntryCnt, computedResultList.size() );     // check test result
                 computedResultList = converter.toList( converter.toNestedMap( computedResultList ));
@@ -303,7 +324,7 @@ public class UnitTestFrameAndStarter{
             //
             // and back again
             final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
-            assertEquals( outerMap, computedResultMap );
+            assertEquals( stimulus, computedResultMap );
         }//for
     }//method()
     
