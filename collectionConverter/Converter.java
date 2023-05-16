@@ -44,8 +44,8 @@ public class Converter {
      * @return  flattened nested map as list
      */
     public List<Object> toList( final Map<Object,Map<Object,Object>> exteriorMap ){
-      //assert null!=exteriorMap : "Illegal Argument : null is NOT supported";
-        
+        assert null!=exteriorMap : "Illegal Argument : null is NOT supported";
+        //
         final List<Object> list = new ArrayList<>();
         final Set<Entry<Object,Map<Object,Object>>> exteriorEntrySet = exteriorMap.entrySet();
         for( final Entry<Object,Map<Object,Object>> exteriorEntry : exteriorEntrySet ){
@@ -69,16 +69,16 @@ public class Converter {
      * @return  nested map
      */
     public Map<Object,Map<Object,Object>> toNestedMap( final List<Object> list ){
-      //assert null!=list : "Illegal Argument : null is NOT supported";
-      //assert 0==list.size()%3 : "Illegal Argument : List requires multiple of three elements that it can be converted to nested map";
-        
+        assert null!=list : "Illegal Argument : null is NOT supported";
+        assert 0==list.size()%3 : "Illegal Argument : List requires multiple of three elements that it can be converted to nested map";
+        //
         final Map<Object,Map<Object,Object>> exteriorMap = new HashMap<Object,Map<Object,Object>>();
         int i=0;
         while( i<list.size() /*-2*/ ){                                          // "-2" NOT needed
             final Object exteriorKey = list.get( i++ );
             final Object interiorKey = list.get( i++ );
             final Object interiorValue = list.get( i++ );
-          //assert null!=exteriorKey && null!=interiorKey && null!=interiorValue : "Illegal Argument :null is NOT supported as list element";
+            assert null!=exteriorKey && null!=interiorKey && null!=interiorValue : "Illegal Argument :null is NOT supported as list element";
             Map<Object,Object> interiorMap = exteriorMap.get( exteriorKey );
             if( null==interiorMap ){
                 interiorMap = new HashMap<Object,Object>();

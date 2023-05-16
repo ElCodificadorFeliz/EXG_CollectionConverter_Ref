@@ -33,7 +33,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_005___2023_05_16__01L;
+    final static private long encodedVersion = 2___00001_006___2023_05_16__02L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -88,21 +88,65 @@ public class UnitTestFrameAndStarter{
     
     
     
-    /** simple test */
+    /** simple test: just a simple map as actual parameter for toList() */
     @Test
     public void testSimple01(){
+        // prepare test input/parameter
+        final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
+        final Map<Object,Object> tmpInnerMap = new HashMap<Object,Object>();
+        tmpInnerMap.put( 11, 110 );
+        tmpOuterMap.put( 1, tmpInnerMap );
+        final Map<Object,Map<Object,Object>> stimulus = tmpOuterMap;
+        //
+        // prepare expected result
+        final List<Object> expectedResult = new ArrayList<Object>( Arrays.asList( 1, 11, 110 ));
+        //
+        // do actual test
+        final Converter converter = new Converter();
+        final List<Object> computedResult = converter.toList( stimulus );
+        //
+        // check test result
+        assertEquals( expectedResult, computedResult );
+    }//method()
+    
+    
+    /** simple test: just a simple list as actual parameter for toNestedMap() - map&list from test01 are used */
+    @Test
+    public void testSimple11(){
+        // prepare test input/parameter
+        final List<Object> stimulus = new ArrayList<Object>( Arrays.asList( 1, 11, 110 ));
+        //
+        // prepare expected result
+        final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
+        final Map<Object,Object> tmpInnerMap = new HashMap<Object,Object>();
+        tmpInnerMap.put( 11, 110 );
+        tmpOuterMap.put( 1, tmpInnerMap );
+        final Map<Object,Map<Object,Object>> expectedResult = tmpOuterMap;
+        //
+        // do actual test
+        final Converter converter = new Converter();
+        final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
+        //
+        // check test result
+        assertEquals( expectedResult, computedResult );
+    }//method()
+    
+    
+    /** simple test: just a simple list as actual parameter for toNestedMap() */
+    @Test
+    public void testSimple12(){
         // prepare test parameter
-        final Integer[] testInputRaw = {
+        final Integer[] tmpTestInputRaw = {
             1, 11, 110,
             2, 21, 210,
             2, 22, 220
         };
-        final List<Integer> listOfInteger = Arrays.asList( testInputRaw );
-        final List<Object> list = new ArrayList<Object>( listOfInteger );
+        final List<Integer> tmpListOfInteger = Arrays.asList( tmpTestInputRaw );
+        final List<Object> stimulus = new ArrayList<Object>( tmpListOfInteger );
         //
         // do actual test
         final Converter converter = new Converter();
-        final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( list );
+        final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
         //
         //check test result
         assertEquals( 2, computedResult.size() );
@@ -118,11 +162,11 @@ public class UnitTestFrameAndStarter{
     }//method()
     
     
-    /** simple test */
+    /** simple test: just a simple list as actual parameter for toNestedMap() */
     @Test
-    public void testSimple02(){
+    public void testSimple13(){
         // prepare test input/parameter
-        final Integer[] testInputRaw = {
+        final Integer[] tmpTestInputRaw = {
             3, 31, 310,
             3, 32, 320,
             3, 33, 330,
@@ -134,12 +178,12 @@ public class UnitTestFrameAndStarter{
             2, 21, 210,
             2, 22, 220
         };
-        final List<Integer> listOfInteger = Arrays.asList( testInputRaw );
-        final List<Object> list = new ArrayList<Object>( listOfInteger );
+        final List<Integer> tmpListOfInteger = Arrays.asList( tmpTestInputRaw );
+        final List<Object> stimulus = new ArrayList<Object>( tmpListOfInteger );
         //
         // do actual test
         final Converter converter = new Converter();
-        final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( list );
+        final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
         //
         // check test result
         assertEquals( 4, computedResult.size() );
@@ -155,91 +199,68 @@ public class UnitTestFrameAndStarter{
     }//method()
     
     
-    /** simple test */
-    @Test
-    public void testSimple03(){
-        // prepare test input/parameter
-        Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
-        Map<Object,Object> tmpInnerMap;
-        tmpInnerMap = new HashMap<Object,Object>();
-        tmpInnerMap.put( 11, 110 );
-        outerMap.put( 1,  tmpInnerMap );
-        //
-        // prepare expected result
-        final List<Object> expectedResult = new ArrayList<Object>( Arrays.asList( 1, 11, 110 ));
-        //
-        // do actual test
-        final Converter converter = new Converter();
-        final List<Object> computedResult = converter.toList( outerMap );
-        //
-        // check test result
-        assertEquals( expectedResult, computedResult );
-    }//method()
     
     
     
-    /** test ... */
+    /** test with bigger map as actual parameter for toList() */
     @Test
     public void test01(){
         // prepare test input/parameter
-        Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
-        //
+        final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
         for( int i=1; i<10; i++ ){
-            final Map<Object,Object> innerMap = new HashMap<Object,Object>();
+            final Map<Object,Object> tmpInnerMap = new HashMap<Object,Object>();
             for( int j=1; j<=i; j++ ){
                 final int key = j*10 +j;
                 final int data = key*10 +j; 
-                innerMap.put( key, data );
+                tmpInnerMap.put( key, data );
             }//for
-            outerMap.put( i, innerMap );
+            tmpOuterMap.put( i, tmpInnerMap );
         }//for
+        final Map<Object,Map<Object,Object>> stimulus = tmpOuterMap;
         //
         // do actual test
         final Converter converter = new Converter();
-        final List<Object> computedResultList = converter.toList( outerMap );
+        final List<Object> computedResultList = converter.toList( stimulus );
         //
         // check test result
         assertEquals( 135, computedResultList.size() );
-        //
-        // and back again
-        final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
-        assertEquals( outerMap, computedResultMap );
     }//method()
     
     
-    /** test ... */
+    /** test with bigger list as actual parameter for toNested() - map&list from test01 are used */
     @Test
     public void test02(){
         // prepare test input/parameter
-        Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
+        final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
         //
         for( int i=9; i>0; i-- ){
-            final Map<Object,Object> innerMap = new HashMap<Object,Object>();
+            final Map<Object,Object> tmpInnerMap = new HashMap<Object,Object>();
             for( int j=1; j<=i; j++ ){
-                 final int key = j*10 +j;
+                final int key = j*10 +j;
                 final int data = key*10 +j; 
-                innerMap.put( key, data );
+                tmpInnerMap.put( key, data );
             }//for
-            outerMap.put( i, innerMap );
+            tmpOuterMap.put( i, tmpInnerMap );
         }//for
+        final Map<Object,Map<Object,Object>> stimulus = tmpOuterMap;
         //
         // do actual test
         final Converter converter = new Converter();
-        final List<Object> computedResultList = converter.toList( outerMap );
+        final List<Object> computedResultList = converter.toList( stimulus );
         //
         // check test result
         assertEquals( 135, computedResultList.size() );
         //
         // and back again
         final Map<Object,Map<Object,Object>> computedResultMap = converter.toNestedMap( computedResultList );
-        assertEquals( outerMap, computedResultMap );
+        assertEquals( stimulus, computedResultMap );
     }//method()
     
     
-    /** test ... */
+    /** test with different random generated maps as actual parameter for toNested(toList())*/
     @Test
     public void randomBasedTest01(){
-        for( int runsStillToDo = 42; --runsStillToDo>0; ){
+        for( int runsStillToDo = 42; --runsStillToDo>0; ){                      // foreach random based test
             int innerEntryCnt = 0;
             //
             // prepare test input/parameter
@@ -278,30 +299,23 @@ public class UnitTestFrameAndStarter{
     
     
     
-    /** extreme test: list with wrong numer of elements as actual parameter for toMap() */
+    /** extreme test: list with wrong number of elements as actual parameter for toNestedMap() */
     @Test
     public void extremeTest01(){
         final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
         final Converter converter = new Converter();
         //
-        final int[][] stimuli = {
-            { 1 },
-            { 1, 2 },
-            { 1, 2, 3, 4 },
-            { 1, 2, 3, 4, 5 },
-            { 1, 2, 3, 4, 5, 6, 7 },
-            { 1, 2, 3, 4, 5, 6, 7, 8 }
-        };
-        for( int[] currentStimulus : stimuli ){
+        int elemCnt = 1;
+        while( 42 > elemCnt ){
             //
             // prepare test        
             boolean expectedExceptionDetected = false;
             final List<Object> stimulus = new ArrayList<Object>();
-            for( final int elem : currentStimulus )  stimulus.add( elem );
+            for( int elem=0;  elem<elemCnt;  elem++ )  stimulus.add( elem );
             //
             // do actual test
             try{
-                final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
+                final Map<Object,Map<Object,Object>> throwAwayComputedResult = converter.toNestedMap( stimulus );
             }catch( final IllegalArgumentException | AssertionError ex ){
                 expectedExceptionDetected = true;
             }finally{
@@ -313,12 +327,14 @@ public class UnitTestFrameAndStarter{
                     ));
                     fail();
                 }//if
-            }//try                
-        }//for
+            }//try
+            //
+            elemCnt +=  (2==elemCnt%3) ? 2 : 1;                                 // skip multiples of 3
+        }//while
     }//method()
     
     
-    /** extreme test: empty list as actual parameter for toMap() */
+    /** extreme test: empty list as actual parameter for toNestedMap() */
     @Test
     public void extremeTest11(){
         final Converter converter = new Converter();
@@ -349,7 +365,7 @@ public class UnitTestFrameAndStarter{
         //
         // do actual test
         try{
-            final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( null );
+            final Map<Object,Map<Object,Object>> throwAwayComputedResult = converter.toNestedMap( null );
         }catch( final IllegalArgumentException | AssertionError ex ){
             expectedExceptionDetected = true;
         }finally{
@@ -369,37 +385,43 @@ public class UnitTestFrameAndStarter{
     @Test
     public void extremeTest22(){
         final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
+        final Converter converter = new Converter();
         //
-        final int[] orgArrayOfInt = { 1, 2, 3, 4, 5 };
-        //       
-        for( int i=orgArrayOfInt.length; --i>=0; ){
-            final Converter converter = new Converter();
-            //
-            // prepare test input/parameter
-            final Integer[] tmpArrayOfInteger = new Integer[orgArrayOfInt.length];
-            for( int j=orgArrayOfInt.length; --j>=0; )  tmpArrayOfInteger[j] = orgArrayOfInt[j];
-            tmpArrayOfInteger[i] = null;
-            //
-            final List<Integer> tmpListOfInteger = Arrays.asList( tmpArrayOfInteger );
-            final List<Object> list = new ArrayList<Object>( tmpListOfInteger );
-            boolean expectedExceptionDetected = false;
-            //
-            // do actual test
-            try{
-                final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( list );
-            }catch( final IllegalArgumentException | AssertionError ex ){
-                expectedExceptionDetected = true;
-            }finally{
-                //check test result
-                if( ! expectedExceptionDetected ){
-                    Herald.proclaimError( String.format(
-                        "ERROR in %s expected reaction did NOT occur\n",
-                        testName
-                    ));
-                    fail();
-                }//if
+        int elemCnt = 3;
+        while( 42 > elemCnt ){
+            for( int indexOfNull=elemCnt; --indexOfNull>=0; ){
+                //
+                // prepare test        
+                final List<Object> stimulus = new ArrayList<Object>();
+                for( int elem=0;  elem<elemCnt;  elem++ ){                      // elem is both: list element
+                    if( indexOfNull==elem ){                                    //...and index of list element
+                        stimulus.add( null );
+                    }else {
+                        stimulus.add( elem );
+                    }//if
+                }//for
+                //
+                boolean expectedExceptionDetected = false;
+                //
+                // do actual test
+                try{
+                    final Map<Object,Map<Object,Object>> throwAwayComputedResult = converter.toNestedMap( stimulus );
+                }catch( final IllegalArgumentException | AssertionError ex ){
+                    expectedExceptionDetected = true;
+                }finally{
+                    //check test result
+                    if( ! expectedExceptionDetected ){
+                        Herald.proclaimError( String.format(
+                            "ERROR in %s expected reaction did NOT occur\n",
+                            testName
+                        ));
+                        fail();
+                    }//if
             }//try
         }//for
+            //
+        elemCnt += 3;
+        }//while
     }//method()    
     
     
@@ -416,7 +438,7 @@ public class UnitTestFrameAndStarter{
         //
         // do actual test
         try{
-            final List<Object> computedResultList = converter.toList( null );
+            final List<Object> throwAwayComputedResult = converter.toList( null );
         }catch( final IllegalArgumentException | AssertionError ex ){
             expectedExceptionDetected = true;
         }finally{
@@ -454,6 +476,7 @@ public class UnitTestFrameAndStarter{
     //###
     //### support stuff
     //###
+    
     
     //##########################################################################
     //###
@@ -545,6 +568,23 @@ public class UnitTestFrameAndStarter{
         }catch( final InvocationTargetException ex ){
             throw new TestSupportException( String.format( "method \"%s\" can NOT be called properly", requestedMethodName ),  ex.getCause() );
         }//try 
+    }//method()
+    
+    
+    
+    //##########################################################################
+    //###
+    //###   other stuff
+    //###
+    
+    private static void prettyPrintMap( final Map<Object,Map<Object,Object>> outerMap ){
+        for( final Object outerKey : outerMap.keySet() ){
+            final Map<Object,Object> innerMap = outerMap.get( outerKey );
+            for( final Object innerKey : innerMap.keySet() ){
+                final Object innerValue = innerMap.get( innerKey );
+                System.out.printf( "%5s  =>%5s  ->%5s\n",  outerKey, innerKey, innerValue );
+            }//for
+        }//for
     }//method()
     
 }//class
