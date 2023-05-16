@@ -17,7 +17,7 @@ import stuffBeginnersDontHaveToUnderstand.Version;
  *          Px@Hamburg-UAS.eu
  * @version {@value #encodedVersion}
  */
-public class Converter {
+public class Converter implements Converter_I {
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
@@ -35,14 +35,7 @@ public class Converter {
     
     
     
-    //...
-    
-    /**
-     * ...
-     * 
-     * @param  exteriorMap  nested map that contains an interior map as datavalue
-     * @return  flattened nested map as list
-     */
+    @Override
     public List<Object> toList( final Map<Object,Map<Object,Object>> exteriorMap ){
         assert null!=exteriorMap : "Illegal Argument : null is NOT supported";
         //
@@ -61,13 +54,7 @@ public class Converter {
     }//method()
     
     
-    
-    /**
-     * ...
-     * 
-     * @param list  list containing flattened nested map
-     * @return  nested map
-     */
+    @Override
     public Map<Object,Map<Object,Object>> toNestedMap( final List<Object> list ){
         assert null!=list : "Illegal Argument : null is NOT supported";
         assert 0==list.size()%3 : "Illegal Argument : List requires multiple of three elements that it can be converted to nested map";

@@ -4,7 +4,7 @@ package testOfCollectionConverter;
 
 import static org.junit.jupiter.api.Assertions.*;
 //
-import collectionConverter.Converter;
+import collectionConverter.Converter_I;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,7 +33,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_006___2023_05_16__02L;
+    final static private long encodedVersion = 2___00001_007___2023_05_16__03L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -42,6 +42,12 @@ public class UnitTestFrameAndStarter{
      */
     static public String getDecodedVersion(){ return version.getDecodedVersion(); }
     // Obiges (ab VERSION) dient nur der Versionierung.
+    
+    
+    
+    
+    
+    final static private String requestedRefTypeQualified = "collectionConverter.Converter";
     
     
     
@@ -91,6 +97,8 @@ public class UnitTestFrameAndStarter{
     /** simple test: just a simple map as actual parameter for toList() */
     @Test
     public void testSimple01(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         // prepare test input/parameter
         final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
         final Map<Object,Object> tmpInnerMap = new HashMap<Object,Object>();
@@ -102,7 +110,6 @@ public class UnitTestFrameAndStarter{
         final List<Object> expectedResult = new ArrayList<Object>( Arrays.asList( 1, 11, 110 ));
         //
         // do actual test
-        final Converter converter = new Converter();
         final List<Object> computedResult = converter.toList( stimulus );
         //
         // check test result
@@ -113,6 +120,8 @@ public class UnitTestFrameAndStarter{
     /** simple test: just a simple list as actual parameter for toNestedMap() - map&list from test01 are used */
     @Test
     public void testSimple11(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         // prepare test input/parameter
         final List<Object> stimulus = new ArrayList<Object>( Arrays.asList( 1, 11, 110 ));
         //
@@ -124,7 +133,6 @@ public class UnitTestFrameAndStarter{
         final Map<Object,Map<Object,Object>> expectedResult = tmpOuterMap;
         //
         // do actual test
-        final Converter converter = new Converter();
         final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
         //
         // check test result
@@ -135,6 +143,8 @@ public class UnitTestFrameAndStarter{
     /** simple test: just a simple list as actual parameter for toNestedMap() */
     @Test
     public void testSimple12(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         // prepare test parameter
         final Integer[] tmpTestInputRaw = {
             1, 11, 110,
@@ -145,7 +155,6 @@ public class UnitTestFrameAndStarter{
         final List<Object> stimulus = new ArrayList<Object>( tmpListOfInteger );
         //
         // do actual test
-        final Converter converter = new Converter();
         final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
         //
         //check test result
@@ -165,6 +174,8 @@ public class UnitTestFrameAndStarter{
     /** simple test: just a simple list as actual parameter for toNestedMap() */
     @Test
     public void testSimple13(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         // prepare test input/parameter
         final Integer[] tmpTestInputRaw = {
             3, 31, 310,
@@ -182,7 +193,6 @@ public class UnitTestFrameAndStarter{
         final List<Object> stimulus = new ArrayList<Object>( tmpListOfInteger );
         //
         // do actual test
-        final Converter converter = new Converter();
         final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
         //
         // check test result
@@ -205,6 +215,8 @@ public class UnitTestFrameAndStarter{
     /** test with bigger map as actual parameter for toList() */
     @Test
     public void test01(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         // prepare test input/parameter
         final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
         for( int i=1; i<10; i++ ){
@@ -219,7 +231,6 @@ public class UnitTestFrameAndStarter{
         final Map<Object,Map<Object,Object>> stimulus = tmpOuterMap;
         //
         // do actual test
-        final Converter converter = new Converter();
         final List<Object> computedResultList = converter.toList( stimulus );
         //
         // check test result
@@ -230,6 +241,8 @@ public class UnitTestFrameAndStarter{
     /** test with bigger list as actual parameter for toNested() - map&list from test01 are used */
     @Test
     public void test02(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         // prepare test input/parameter
         final Map<Object,Map<Object,Object>> tmpOuterMap = new HashMap<Object,Map<Object,Object>>();
         //
@@ -245,7 +258,6 @@ public class UnitTestFrameAndStarter{
         final Map<Object,Map<Object,Object>> stimulus = tmpOuterMap;
         //
         // do actual test
-        final Converter converter = new Converter();
         final List<Object> computedResultList = converter.toList( stimulus );
         //
         // check test result
@@ -260,13 +272,14 @@ public class UnitTestFrameAndStarter{
     /** test with different random generated maps as actual parameter for toNested(toList())*/
     @Test
     public void randomBasedTest01(){
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
         for( int runsStillToDo = 42; --runsStillToDo>0; ){                      // foreach random based test
             int innerEntryCnt = 0;
             //
             // prepare test input/parameter
             final List<Integer> li = new ArrayList<Integer>( Arrays.asList( 1, 2, 3, 4, 5, 6, 7, 8, 9 ));
             Map<Object,Map<Object,Object>> outerMap = new HashMap<Object,Map<Object,Object>>();
-            //
             for( int stillToDo=7; --stillToDo>0; ){
                 final int index =  (int)( li.size() * Math.random() );
                 final Map<Object,Object> innerMap = new HashMap<Object,Object>();
@@ -282,7 +295,6 @@ public class UnitTestFrameAndStarter{
             }//for
             //
             // do actual test
-            final Converter converter = new Converter();
             List<Object> computedResultList = converter.toList( outerMap );
             for( int stillToDo=5; --stillToDo>0; ){
                 assertEquals( 3*innerEntryCnt, computedResultList.size() );     // check test result
@@ -303,7 +315,7 @@ public class UnitTestFrameAndStarter{
     @Test
     public void extremeTest01(){
         final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
-        final Converter converter = new Converter();
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
         //
         int elemCnt = 1;
         while( 42 > elemCnt ){
@@ -337,8 +349,12 @@ public class UnitTestFrameAndStarter{
     /** extreme test: empty list as actual parameter for toNestedMap() */
     @Test
     public void extremeTest11(){
-        final Converter converter = new Converter();
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
+        // do actual test
         final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( new ArrayList<Object>() );
+        //
+        //check test result
         assertTrue( computedResult.isEmpty() );
     }//method()
     
@@ -346,8 +362,12 @@ public class UnitTestFrameAndStarter{
     /** extreme test: empty map as actual parameter for toList() */
     @Test
     public void extremeTest12(){
-        final Converter converter = new Converter();
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
+        //
+        // do actual test
         final List<Object> computedResult = converter.toList( new HashMap<Object,Map<Object,Object>>() );
+        //
+        //check test result
         assertTrue( computedResult.isEmpty() );
     }//method()
     
@@ -357,8 +377,7 @@ public class UnitTestFrameAndStarter{
     @Test
     public void extremeTest21(){
         final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
-        //
-        final Converter converter = new Converter();
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
         //
         // prepare test        
         boolean expectedExceptionDetected = false;
@@ -385,7 +404,7 @@ public class UnitTestFrameAndStarter{
     @Test
     public void extremeTest22(){
         final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
-        final Converter converter = new Converter();
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
         //
         int elemCnt = 3;
         while( 42 > elemCnt ){
@@ -430,8 +449,7 @@ public class UnitTestFrameAndStarter{
     @Test
     public void extremeTest31(){
         final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
-        //
-        final Converter converter = new Converter();
+        final Converter_I converter = (Converter_I)( generateRequestedObject( requestedRefTypeQualified ));
         //
         // prepare test        
         boolean expectedExceptionDetected = false;
@@ -518,6 +536,9 @@ public class UnitTestFrameAndStarter{
     }//class
     
     
+    
+    
+    
     private static Object generateRequestedObject (
         final String      requestedClassName,
         final Class<?>[]  requestedParameterTypes,
@@ -528,6 +549,10 @@ public class UnitTestFrameAndStarter{
             final Object constructedObject = callConstructor( requestedClass, requestedParameterTypes, actualParameter );
             return constructedObject;
         }catch( final ClassNotFoundException ex ){
+            Herald.proclaimError( String.format(
+                "ERROR : Can NOT create object from %s\n",
+                requestedClassName
+            ));
             throw new TestSupportException( String.format( "object of \"%s\" can NOT be generated properly", requestedClassName ),  ex );
         }//try
     }//method()
