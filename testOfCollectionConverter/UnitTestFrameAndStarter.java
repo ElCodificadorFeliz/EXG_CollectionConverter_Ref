@@ -18,6 +18,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import stuffBeginnersDontHaveToUnderstand.EnvironmentAnalyzer;
 import stuffBeginnersDontHaveToUnderstand.GivenCodeVersion;
+import stuffBeginnersDontHaveToUnderstand.Herald;
 import stuffBeginnersDontHaveToUnderstand.Version;
 
 
@@ -32,7 +33,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_004___2023_05_15__01L;
+    final static private long encodedVersion = 2___00001_005___2023_05_16__01L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -277,9 +278,49 @@ public class UnitTestFrameAndStarter{
     
     
     
-    /** extreme test: empty list as actual parameter for toMap() */
+    /** extreme test: list with wrong numer of elements as actual parameter for toMap() */
     @Test
     public void extremeTest01(){
+        final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
+        final Converter converter = new Converter();
+        //
+        final int[][] stimuli = {
+            { 1 },
+            { 1, 2 },
+            { 1, 2, 3, 4 },
+            { 1, 2, 3, 4, 5 },
+            { 1, 2, 3, 4, 5, 6, 7 },
+            { 1, 2, 3, 4, 5, 6, 7, 8 }
+        };
+        for( int[] currentStimulus : stimuli ){
+            //
+            // prepare test        
+            boolean expectedExceptionDetected = false;
+            final List<Object> stimulus = new ArrayList<Object>();
+            for( final int elem : currentStimulus )  stimulus.add( elem );
+            //
+            // do actual test
+            try{
+                final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( stimulus );
+            }catch( final IllegalArgumentException | AssertionError ex ){
+                expectedExceptionDetected = true;
+            }finally{
+                //check test result
+                if( ! expectedExceptionDetected ){
+                    Herald.proclaimError( String.format(
+                        "ERROR in %s expected reaction did NOT occur\n",
+                        testName
+                    ));
+                    fail();
+                }//if
+            }//try                
+        }//for
+    }//method()
+    
+    
+    /** extreme test: empty list as actual parameter for toMap() */
+    @Test
+    public void extremeTest11(){
         final Converter converter = new Converter();
         final Map<Object,Map<Object,Object>> computedResult = converter.toNestedMap( new ArrayList<Object>() );
         assertTrue( computedResult.isEmpty() );
@@ -288,7 +329,7 @@ public class UnitTestFrameAndStarter{
     
     /** extreme test: empty map as actual parameter for toList() */
     @Test
-    public void extremeTest02(){
+    public void extremeTest12(){
         final Converter converter = new Converter();
         final List<Object> computedResult = converter.toList( new HashMap<Object,Map<Object,Object>>() );
         assertTrue( computedResult.isEmpty() );
@@ -298,7 +339,9 @@ public class UnitTestFrameAndStarter{
     
     /** extreme test: list is null */
     @Test
-    public void extremeTest11(){
+    public void extremeTest21(){
+        final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
+        //
         final Converter converter = new Converter();
         //
         // prepare test        
@@ -311,14 +354,22 @@ public class UnitTestFrameAndStarter{
             expectedExceptionDetected = true;
         }finally{
             //check test result
-            if( ! expectedExceptionDetected )  fail();
+            if( ! expectedExceptionDetected ){
+                Herald.proclaimError( String.format(
+                    "ERROR in %s expected reaction did NOT occur\n",
+                    testName
+                ));
+                fail();
+            }//if
         }//try
     }//method()    
     
     
     /** extreme test: list element is null */
     @Test
-    public void extremeTest12(){
+    public void extremeTest22(){
+        final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
+        //
         final int[] orgArrayOfInt = { 1, 2, 3, 4, 5 };
         //       
         for( int i=orgArrayOfInt.length; --i>=0; ){
@@ -340,7 +391,13 @@ public class UnitTestFrameAndStarter{
                 expectedExceptionDetected = true;
             }finally{
                 //check test result
-                if( ! expectedExceptionDetected )  fail();
+                if( ! expectedExceptionDetected ){
+                    Herald.proclaimError( String.format(
+                        "ERROR in %s expected reaction did NOT occur\n",
+                        testName
+                    ));
+                    fail();
+                }//if
             }//try
         }//for
     }//method()    
@@ -349,7 +406,9 @@ public class UnitTestFrameAndStarter{
     
     /** extreme test: map is null */
     @Test
-    public void extremeTest21(){
+    public void extremeTest31(){
+        final String testName = new Object(){}.getClass().getEnclosingMethod().getName();
+        //
         final Converter converter = new Converter();
         //
         // prepare test        
@@ -362,7 +421,13 @@ public class UnitTestFrameAndStarter{
             expectedExceptionDetected = true;
         }finally{
             //check test result
-            if( ! expectedExceptionDetected )  fail();
+            if( ! expectedExceptionDetected ){
+                Herald.proclaimError( String.format(
+                    "ERROR in %s expected reaction did NOT occur\n",
+                    testName
+                ));
+                fail();
+            }//if
         }//try
     }//method()
     
