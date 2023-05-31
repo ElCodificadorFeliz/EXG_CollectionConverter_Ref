@@ -33,7 +33,7 @@ public class UnitTestFrameAndStarter{
     //
     //--VERSION:-------------------------------#---vvvvvvvvv---vvvv-vv-vv--vv
     //  ========                               #___~version~___YYYY_MM_DD__dd_
-    final static private long encodedVersion = 2___00001_008___2023_05_16__04L;
+    final static private long encodedVersion = 2___00001_009___2023_05_31__01L;
     //-----------------------------------------#---^^^^^-^^^---^^^^-^^-^^--^^
     final static private Version version = new Version( encodedVersion );
     /**
@@ -271,7 +271,7 @@ public class UnitTestFrameAndStarter{
     
     /**
      * Test with different random generated maps as actual parameter for toNestedMap(toList())
-     * and check if map equal to original mapis reproduced again.<br />
+     * and checks, if map equal to original map, is reproduced again.<br />
      * <br />
      * <br />
      * Achtung! Dies ist ein zufallsbasierter Test.<br />
@@ -457,8 +457,8 @@ public class UnitTestFrameAndStarter{
                         ));
                         fail();
                     }//if
-            }//try
-        }//for
+                }//try
+            }//for
             //
         elemCnt += 3;
         }//while
