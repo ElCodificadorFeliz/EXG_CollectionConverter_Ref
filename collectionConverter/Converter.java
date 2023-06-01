@@ -39,7 +39,7 @@ public class Converter implements Converter_I {
     public List<Object> toList( final Map<Object,Map<Object,Object>> exteriorMap ){
         assert null!=exteriorMap : "Illegal Argument : null is NOT supported";
         //
-        final List<Object> list = new ArrayList<>();
+        final List<Object> list = new ArrayList<Object>();
         final Set<Entry<Object,Map<Object,Object>>> exteriorEntrySet = exteriorMap.entrySet();
         for( final Entry<Object,Map<Object,Object>> exteriorEntry : exteriorEntrySet ){
             final Map<Object,Object> interiorMap = exteriorEntry.getValue();
